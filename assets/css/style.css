@@ -40,7 +40,7 @@
     width: 50%;
   }
 
-  #pastBtn {
+  .past-button {
     margin-top: 10px;
     background-color: gray;
   }

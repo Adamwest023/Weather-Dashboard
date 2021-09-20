@@ -40,6 +40,7 @@ function getUserCities(userInput) {
                 }).then(function (oneCallData) {
                     uviDisplay(oneCallData)
                     displayWeekWeather(oneCallData);
+                    updatePastCities();
                     console.log(oneCallData)
                 })
         })
@@ -73,7 +74,7 @@ var displayWeather = function (data) {
     weather +=
         `<div class=" text-start border border-dark">
         <div class="col">
-            <h2 class="col-2" id='city-title'>${data.name  + date}</h2> 
+            <h2 class="col-2" id='city-title'>${data.name + date}</h2> 
             <img class="col-2" src = ${weatherImg}> 
         </div>
         <p> <span>Temp:</span> ${temp} &degF </p>
@@ -148,15 +149,47 @@ var displayWeekWeather = function (oneCallData) {
     weekForecast.innerHTML = weekWeather
 };
 
-var pastCities = function(city) {
-    var pastCitiesInfo = ' '
+// view past cities
 
-    pastCitiesInfo += `
-        <button  id="pastBtn" type="submit" class="btn btn-info" >${city}</button>
-    `
+var pastSearchedCities = JSON.parse(localStorage.getItem("city-list")) || [];
 
-    pastCitiesContainerEl.innerHTML = pastCitiesInfo ;
-}
+function pastCities() {
+    // pastSearch = '';
+    var pastSearch = JSON.parse(localStorage.getItem("city-list")) || [];
+    var pastSearchEl = document.querySelector("#city-container");
+    
+    for (var i = 0; i < pastSearch.length; i++) {
+        var pastSearchBtn = document.createElement("button")
+        pastSearchBtn.classList.add("past-button");
+        pastSearchBtn.setAttribute('id', pastSearch[i])
+        pastSearchBtn.innerHTML = pastSearch[i];
+        pastSearchEl.appendChild(pastSearchBtn);
+        
+    }
+};
+
+
+function updatePastCities() {
+    var pastSearchEl =document.querySelector("#city-container");
+    var pastSearch = document.getElementById("city").value;
+    if (pastSearchedCities.indexOf(pastSearch) == -1) {
+        pastSearchedCities.push(pastSearch);
+        localStorage.setItem('city-list', JSON.stringify(pastSearchedCities));
+    }
+    pastSearchEl.innerHTML = "";
+    pastCities();
+};
+
+
+//usability of the past buttons
+$("#city-container").on('click', "button", function() {
+    var pastSearch = $(this).attr("id");
+    document.getElementById('city').value = pastSearch
+    document.querySelector("#citySearch").click();
+    
+});
+
+
 
 // function to trigger api pulls on click
 var formSubmitHandler = function (event) {
@@ -166,16 +199,17 @@ var formSubmitHandler = function (event) {
 
     if (city) {
         getUserCities(city);
-        pastCities(city);
-        cityInputEl.value = "";
         
-        
+        // pastCities(city);
+
+
+
     } else {
         alert("Please enter a city");
     }
 };
 
-//event listeners
-// pastCitiesContainerEl.addEventListener('click',)
+pastCities();
+
 
 document.getElementById("citySearch").addEventListener('click', formSubmitHandler);
