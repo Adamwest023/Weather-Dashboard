@@ -3,3 +3,44 @@
 
 }
 
+.list-group {
+    padding: 0;
+    list-style: none;
+  }
+
+  .list-item {
+    margin-bottom: 10px;
+    padding: 1.5%;
+    border-radius: var(--border-radius);
+    background-color: var(--light-dark);
+    color: var(--primary);
+    text-decoration: none;
+  }
+  
+  .list-item:hover {
+    background-color: var(--dark);
+  }
+
+  #day-card {
+    background-color: #07064C;
+    padding: 5px;
+    color:whitesmoke;
+    margin: 20px;
+    text-align: left;
+  }
+
+  #day-card h3 {
+    font-size: 16px;
+    font-weight: 800;
+  }
+  #day-card p {
+    font-size: 14px;
+  }
+  #day-card img {
+    width: 50%;
+  }
+
+  #pastBtn {
+    margin-top: 10px;
+    background-color: gray;
+  }
